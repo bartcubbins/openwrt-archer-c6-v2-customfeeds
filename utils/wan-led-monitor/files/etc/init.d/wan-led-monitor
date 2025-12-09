@@ -1,0 +1,22 @@
+#!/bin/sh /etc/rc.common
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2025 Pavel Dubrova <pashadubrova@gmail.com>
+
+START=95
+STOP=10
+
+SERVICE_NAME="wan-led-monitor"
+
+start() {
+	echo "Starting $SERVICE_NAME..."
+	/usr/sbin/wan-led-monitor.sh &
+	echo $! > /var/run/wan-led-monitor.pid
+}
+
+stop() {
+	echo "Stopping $SERVICE_NAME..."
+	if [ -f /var/run/wan-led-monitor.pid ]; then
+		kill $(cat /var/run/wan-led-monitor.pid)
+		rm /var/run/wan-led-monitor.pid
+	fi
+}
